@@ -4,6 +4,7 @@ import { ConfigModule } from './config/config';
 import { Employee } from './db/employees.entity';
 import { EmployeesController } from './employees/employee.controller';
 import { EmployeesService } from './employees/employee.service';
+import { Repository } from 'typeorm';
 
 @Module({
   imports: [
@@ -18,15 +19,9 @@ import { EmployeesService } from './employees/employee.service';
       entities: [Employee],
       synchronize: true,
     }),
-    // TypeOrmModule.forRootAsync({
-    //   useFactory: async () => ({
-    //     seeds: ['src/modules/university/infra/seeds/*.ts'],
-    //     factories: ['src/modules/university/infra/factories/*.ts'],
-    //   }),
-    // } as TypeOrmModuleAsyncOptions),
     TypeOrmModule.forFeature([Employee]),
   ],
   controllers: [EmployeesController],
-  providers: [EmployeesService],
+  providers: [EmployeesService, Repository],
 })
 export class AppModule {}
