@@ -1,31 +1,34 @@
 import { Injectable } from '@nestjs/common';
-import { PageOptionsDto } from '../page/dtos';
-import { Employee } from '../db/employees.entity';
-import { PageMetaDto } from '../page/meta.dto';
-import { PageDto } from '../page/page.dto';
-import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import {
+  FilterOperator,
+  FilterSuffix,
+  PaginateQuery,
+  Paginated,
+  paginate,
+} from 'nestjs-paginate';
+import { Repository } from 'typeorm';
+import { EmployeeDto } from './dto/employee.dto';
+import { Employee } from 'src/db/employees.entity';
 
 @Injectable()
 export class EmployeesService {
   constructor(
     @InjectRepository(Employee)
-    private employeeRepository: Repository<Employee>,
+    private readonly employeesRepository: Repository<Employee>,
   ) {}
 
-  public async getAllCandidates(
-    pageOptionsDto: PageOptionsDto,
-  ): Promise<PageDto<Employee>> {
-    const { order, skip, take } = pageOptionsDto;
-
-    const [entities, itemCount] = await this.employeeRepository.findAndCount({
-      order: { id: order },
-      skip,
-      take,
+  public findAll(query: PaginateQuery): Promise<Paginated<Employee>> {
+    return paginate(query, this.employeesRepository, {
+      sortableColumns: ['id', 'name', 'email', 'gender', 'salary', 'quote'],
+      nullSort: 'last',
+      defaultSortBy: [['id', 'DESC']],
+      searchableColumns: ['name'],
+      select: ['id', 'name', 'email', 'gender', 'salary', 'quote'],
+      filterableColumns: {
+        name: [FilterOperator.EQ, FilterSuffix.NOT],
+        age: true,
+      },
     });
-
-    const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
-
-    return new PageDto(entities, pageMetaDto);
   }
 }

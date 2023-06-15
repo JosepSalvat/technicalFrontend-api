@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule, TypeOrmModuleAsyncOptions } from '@nestjs/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { ConfigModule } from './config/config';
 import { Employee } from './db/employees.entity';
 import { EmployeesController } from './employees/employee.controller';
 import { EmployeesService } from './employees/employee.service';
-import { Repository } from 'typeorm';
 
 @Module({
   imports: [
