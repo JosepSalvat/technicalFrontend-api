@@ -20,11 +20,19 @@ export class EmployeesService {
 
   public findAll(query: PaginateQuery): Promise<Paginated<Employee>> {
     return paginate(query, this.employeesRepository, {
-      sortableColumns: ['id', 'name', 'email', 'gender', 'salary', 'quote'],
+      sortableColumns: [
+        'id',
+        'name',
+        'email',
+        'gender',
+        'salary',
+        'quote',
+        'imageUrl',
+      ],
       nullSort: 'last',
       defaultSortBy: [['id', 'DESC']],
       searchableColumns: ['name'],
-      select: ['id', 'name', 'email', 'gender', 'salary', 'quote'],
+      select: ['id', 'name', 'email', 'gender', 'salary', 'quote', 'imageUrl'],
       filterableColumns: {
         name: [FilterOperator.EQ, FilterSuffix.NOT],
         age: true,

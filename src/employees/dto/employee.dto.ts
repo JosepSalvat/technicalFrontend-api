@@ -16,6 +16,9 @@ export class EmployeeDto {
   @IsEmail()
   email: string;
 
+  @IsString()
+  imageUrl: string;
+
   @IsEnum(EmployeeGender)
   gender: EmployeeGender;
 

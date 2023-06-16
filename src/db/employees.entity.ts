@@ -12,6 +12,9 @@ export class Employee {
   @Column()
   email: string;
 
+  @Column({ nullable: true })
+  imageUrl: string;
+
   @Column({
     type: 'enum',
     enum: EmployeeGender,
